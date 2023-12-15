@@ -17,7 +17,7 @@ const createNewUser = async (data) => {
                 firstName: data.firstName,
                 lastName: data.lastName,
                 address: data.address,
-                phoneNmuber: data.phoneNmuber,
+                phoneNumber: data.phoneNumber,
                 gender: data.gender === '1' ? true : false,
                 roleId: data.roleId
             });

@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/camtrandev/new_nodejs.git"
+    "url": "git+https://github.com/camtrandev/medical-examination-schedule.git"
   },
   "keywords": [
     "project"
@@ -17,9 +17,9 @@
   "author": "camtrandev",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/camtrandev/new_nodejs/issues"
+    "url": "https://github.com/camtrandev/medical-examination-schedule/issues"
   },
-  "homepage": "https://github.com/camtrandev/new_nodejs#readme",
+  "homepage": "https://github.com/camtrandev/medical-examination-schedule#readme",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",

@@ -138,9 +138,10 @@ const createNewUser = (data) => {
                     firstName: data.firstName,
                     lastName: data.lastName,
                     address: data.address,
-                    phoneNmuber: data.phoneNmuber,
-                    gender: data.gender === '1' ? true : false,
-                    roleId: data.roleId
+                    phoneNumber: data.phoneNumber,
+                    gender: data.gender,
+                    roleId: data.roleId,
+                    positionId: data.positionId
                 });
                 // trả về 1 chuối messgae -- tương đương với câu lênh return
                 resolve({
@@ -183,7 +184,7 @@ const deleteUser = (userId) => {
 const upDateUserData = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.id) {
+            if (!data.id || !data.roleId || !data.positionId || !data.gender) {
                 resolve({
                     errCode: 2,
                     message: "missing required parameters"
@@ -201,6 +202,10 @@ const upDateUserData = (data) => {
                 user.lastName = data.lastName;
                 user.firstName = data.firstName;
                 user.address = data.address;
+                user.roleId = data.roleId;
+                user.positionId = data.positionId;
+                user.gender = data.gender;
+                user.phoneNumber = data.phoneNumber;
 
                 // luu thong tin vua thay doi
                 await user.save();

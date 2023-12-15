@@ -29,12 +29,12 @@ module.exports = {
         type: Sequelize.STRING
       },
 
-      phoneNmuber: {
+      phoneNumber: {
         type: Sequelize.STRING
       },
 
       gender: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.STRING
       },
 
       image: {
