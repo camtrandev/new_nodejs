@@ -19,7 +19,10 @@ const {
   handleDeleteUser,
   getAllCode
 
-} = require('../controllers/userController')
+} = require('../controllers/userController');
+const {
+  getTopDoctorHome
+} = require('../controllers/doctorController')
 const router = express.Router();
 
 let initWebroutes = (app) => {
@@ -42,6 +45,7 @@ let initWebroutes = (app) => {
   // Viết API allcode để lấy ROle để phân quyền người dùng
 
   router.get('/api/allcode', getAllCode);
+  router.get('/api/top-doctor-home', getTopDoctorHome);
 
 
   return app.use("/", router);

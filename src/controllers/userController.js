@@ -58,7 +58,6 @@ const handleGetAllUser = async (req, res) => {
 // API Create New User
 const handleCreateNewUser = async (req, res) => {
     let message = await createNewUser(req.body);
-    console.log(message);
     return res.status(200).json(message);
 }
 // API EditUser

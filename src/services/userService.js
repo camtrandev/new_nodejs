@@ -141,7 +141,8 @@ const createNewUser = (data) => {
                     phoneNumber: data.phoneNumber,
                     gender: data.gender,
                     roleId: data.roleId,
-                    positionId: data.positionId
+                    positionId: data.positionId,
+                    image: data.avatar
                 });
                 // trả về 1 chuối messgae -- tương đương với câu lênh return
                 resolve({
@@ -206,6 +207,9 @@ const upDateUserData = (data) => {
                 user.positionId = data.positionId;
                 user.gender = data.gender;
                 user.phoneNumber = data.phoneNumber;
+                if (data.avatar) {
+                    user.image = data.avatar;
+                }
 
                 // luu thong tin vua thay doi
                 await user.save();
@@ -233,7 +237,6 @@ const upDateUserData = (data) => {
 const getAllCodeService = (typeInput) => {
     return new Promise(async (resolve, reject) => {
         try {
-            console.log(typeInput)
             if (!typeInput) {
                 resolve({
                     errCode: 1,
