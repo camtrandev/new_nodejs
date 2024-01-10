@@ -21,8 +21,11 @@ const {
 
 } = require('../controllers/userController');
 const {
-  getTopDoctorHome
-} = require('../controllers/doctorController')
+  getTopDoctorHome,
+  getAllDoctor,
+  postInforDoctor,
+  getDetailDoctorById
+} = require('../controllers/doctorController');
 const router = express.Router();
 
 let initWebroutes = (app) => {
@@ -47,6 +50,11 @@ let initWebroutes = (app) => {
   router.get('/api/allcode', getAllCode);
   router.get('/api/top-doctor-home', getTopDoctorHome);
 
+  // lấy thông tin Bác Sĩ
+  router.get('/api/get-all-doctors', getAllDoctor);
+  // luu thong tin bac si
+  router.post('/api/save-infor-doctors', postInforDoctor);
+  router.get('/api/get-detail-doctor-by-id', getDetailDoctorById);
 
   return app.use("/", router);
 }
