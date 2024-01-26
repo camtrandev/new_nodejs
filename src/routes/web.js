@@ -24,7 +24,8 @@ const {
   getTopDoctorHome,
   getAllDoctor,
   postInforDoctor,
-  getDetailDoctorById
+  getDetailDoctorById,
+  bulkCreateSchedule
 } = require('../controllers/doctorController');
 const router = express.Router();
 
@@ -55,7 +56,7 @@ let initWebroutes = (app) => {
   // luu thong tin bac si
   router.post('/api/save-infor-doctors', postInforDoctor);
   router.get('/api/get-detail-doctor-by-id', getDetailDoctorById);
-
+  router.post('/api/bulk-create-schedule', bulkCreateSchedule)
   return app.use("/", router);
 }
 

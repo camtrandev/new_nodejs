@@ -1,5 +1,7 @@
-
+require('dotenv').config();
+const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
 const db = require('../models/index')
+import _ from 'lodash';
 
 const getTopDoctorHome = (limitInput) => {
     return new Promise(async (resolve, reject) => {
@@ -51,18 +53,36 @@ const getAllDoctors = () => {
 const saveDetailInforDoctor = (inputData) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!inputData.contentHTML || !inputData.contentMarkdown) {
+            if (!inputData.doctorId || !inputData.contentHTML || !inputData.contentMarkdown || !inputData.action) {
                 resolve({
                     errCode: 1,
                     errMessage: 'Missing parameter'
                 })
             } else {
-                await db.Markdown.create({
-                    contentHTML: inputData.contentHTML,
-                    contentMarkdown: inputData.contentMarkdown,
-                    description: inputData.description,
-                    doctorId: inputData.doctorId
-                });
+
+                if (inputData.action === 'CREATE') {
+                    await db.Markdown.create({
+                        contentHTML: inputData.contentHTML,
+                        contentMarkdown: inputData.contentMarkdown,
+                        description: inputData.description,
+                        doctorId: inputData.doctorId
+                    });
+                } else if (inputData.action === 'EDIT') {
+                    let doctorMarkdown = await db.Markdown.findOne({
+                        where: { doctorId: inputData.doctorId },
+                        raw: false
+                    })
+
+                    if (doctorMarkdown) {
+                        doctorMarkdown.contentHTML = inputData.contentHTML;
+                        doctorMarkdown.contentMarkdown = inputData.contentMarkdown;
+                        doctorMarkdown.description = inputData.description;
+                        // doctorMarkdown.updateAt = new Date();
+
+                        await doctorMarkdown.save();
+                    }
+                }
+
                 resolve({
                     errCode: 0,
                     errMessage: 'Save infor doctor succeed'
@@ -87,7 +107,7 @@ const getDetailDoctorById = (inputId) => {
                 let data = await db.User.findOne({
                     where: { id: inputId },
                     attributes: {
-                        exclude: ['password', 'image']
+                        exclude: ['password']
                     },
                     // Sử dụng include có tác dụng là : nó lấy thông tin của user và kèm theo thông tin của nó tồn tại trong Markdown
                     // Giống như nối 2 bẳng (join)               
@@ -97,12 +117,18 @@ const getDetailDoctorById = (inputId) => {
                             attributes: ['description', 'contentHTML', 'contentMarkdown']
 
                         },
-                        { model: db.Allcode, as: 'genderData', attributes: ['valueEn', 'valueVi'] }
+                        { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] }
                     ],
-                    raw: true,
+                    raw: false,
                     // nest: giúp code trả ra nó gọn chia các object
                     nest: true
                 })
+
+                if (data && data.image) {
+                    data.image = new Buffer(data.image, 'base64').toString('binary');
+                }
+
+                if (!data) data = {};
 
                 resolve({
                     errCode: 0,
@@ -116,9 +142,74 @@ const getDetailDoctorById = (inputId) => {
     })
 }
 
+// Lưu lịch trình khám bệnh của bác sĩ xuống database
+const bulkCreateSchedule = (data) => {
+
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!data.arrSchedule || !data.doctorId || !data.formatedDate) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing param !'
+                })
+            } else {
+                let schedule = data.arrSchedule;
+                if (schedule && schedule.length > 0) {
+                    schedule = schedule.map(item => {
+                        item.maxNumber = MAX_NUMBER_SCHEDULE;
+                        return item;
+                    })
+                }
+
+
+
+                // get all exsting data
+                let existing = await db.Schedule.findAll(
+                    {
+                        where: { doctorId: data.doctorId, date: data.formatedDate },
+                        attributes: ['timeType', 'date', 'doctorId', 'maxNumber'],
+                        raw: true
+                    }
+                )
+
+                // convert date
+
+                if (existing && existing.length > 0) {
+                    existing = existing.map(item => {
+                        item.date = new Date(item.date).getTime();
+                        return item;
+                    })
+                }
+
+                // compare different
+                let toCreate = _.differenceWith(schedule, existing, (a, b) => {
+                    return a.date === b.date && a.timeType === b.timeType;
+                });
+
+
+                // create data
+                if (toCreate && toCreate.length > 0) {
+                    await db.Schedule.bulkCreate(toCreate);
+
+                }
+
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Ok!'
+                });
+            }
+
+
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
 module.exports = {
     getTopDoctorHome,
     getAllDoctors,
     saveDetailInforDoctor,
-    getDetailDoctorById
+    getDetailDoctorById,
+    bulkCreateSchedule
 }

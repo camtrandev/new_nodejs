@@ -16,12 +16,12 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
-            date: {
-                type: Sequelize.DATE
+            timeType: {
+                type: Sequelize.STRING
             },
 
-            timetype: {
-                type: Sequelize.STRING
+            date: {
+                type: Sequelize.DATE
             },
 
             doctorId: {
