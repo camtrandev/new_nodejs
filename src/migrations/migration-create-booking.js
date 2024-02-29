@@ -8,6 +8,7 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
+
             statusId: {
                 type: Sequelize.STRING
             },
@@ -25,6 +26,10 @@ module.exports = {
             },
 
             timeType: {
+                type: Sequelize.STRING
+            },
+
+            token: {
                 type: Sequelize.STRING
             },
 

@@ -11,7 +11,9 @@ const {
 const postBookAppointment = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.email || !data.doctorId || !data.timeType || !data.date) {
+            if (!data.email || !data.doctorId || !data.timeType || !data.date
+                || !data.fullName
+            ) {
                 resolve({
                     erCode: 1,
                     errMessage: 'Missing parameter!!'
@@ -21,9 +23,10 @@ const postBookAppointment = (data) => {
 
                 await sendSimpleEmail({
                     receiverEmail: data.email,
-                    patientName: "Long",
-                    time: "8:00-9:00 Thứ 7 29/2-2024",
-                    doctorName: "Mr.Cầm",
+                    patientName: data.fullName,
+                    time: data.String,
+                    doctorName: data.doctorName,
+                    language: data.language,
                     redirectLink: 'https://www.facebook.com/thanh.stat/'
                 })
 
