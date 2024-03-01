@@ -53,7 +53,7 @@ Please read the information carefully and click on the link to confirm your medi
          <div>
            <a href=${dataSend.redirectLink} target="_blank">Click here</a>
          </div>
-         <div> Thank you!</div>
+         <div> Thank you! </div>
         `
     }
     return result;

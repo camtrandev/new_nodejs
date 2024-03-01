@@ -32,7 +32,8 @@ const {
 } = require('../controllers/doctorController');
 
 const {
-  postBookAppointment
+  postBookAppointment,
+  postVerifyBookAppointment
 } = require('../controllers/patientController');
 const router = express.Router();
 
@@ -69,8 +70,8 @@ let initWebroutes = (app) => {
   router.get('/api/get-profile-doctor-by-id', getProfileDoctorById);
 
 
-  router.post('/api/patient-book-appointment', postBookAppointment)
-
+  router.post('/api/patient-book-appointment', postBookAppointment);
+  router.post('/api/verify-book-appointment', postVerifyBookAppointment);
 
   return app.use("/", router);
 }
