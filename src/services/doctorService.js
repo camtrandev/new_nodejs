@@ -119,12 +119,14 @@ const saveDetailInforDoctor = (inputData) => {
                     doctorInfor.addressClinic = inputData.addressClinic;
                     doctorInfor.nameClinic = inputData.nameClinic;
                     doctorInfor.note = inputData.note;
-                    doctorInfor.specialtyId = inputData.specialtyId,
-                        doctorInfor.clinicId = inputData.clinicId
+                    doctorInfor.specialtyId = inputData.specialtyId;
+                    doctorInfor.clinicId = inputData.clinicId;
+
                     await doctorInfor.save();
                 } else {
                     //create
                     await db.Doctor_infor.create({
+
                         doctorId: inputData.doctorId,
                         priceId: inputData.selectedPrice,
                         paymentId: inputData.selectedPayment,
@@ -134,6 +136,7 @@ const saveDetailInforDoctor = (inputData) => {
                         note: inputData.note,
                         specialtyId: inputData.specialtyId,
                         clinicId: inputData.clinicId,
+
                     });
                 }
 
